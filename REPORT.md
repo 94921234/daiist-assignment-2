@@ -55,10 +55,28 @@ you therefore can't conclude from your results.*
 
 ## Finetuning and baselines
 
-*Which model and task (detection or classification) and why. A results table on
-the same test split: your finetuned model, the pretrained COCO model zero-shot,
-and a trivial baseline. What changed, and whether the gap is as large as you
-expected.*
+### YOLO11 Fine-Tuning
+
+I fine-tuned a pretrained YOLO11n model for 30 epochs using a Tesla T4 GPU in Google Colab, with an image size of 640, batch size of 16, and random seed of 42. I chose YOLO11n because it is lightweight and its pretrained weights allow it to learn more efficiently.
+
+### Training Performance
+
+Training classification loss decreased from 4.28 to 1.11, while validation loss decreased from 3.51 to 1.13. Both followed a similar downward trend, suggesting no obvious signs of overfitting in these curves. Validation mAP50 increased from approximately 14% to 69%, showing substantial improvement during training.
+
+### Validation Results
+
+The best saved model achieved the following results:
+
+| Metric | Result |
+|---|---:|
+| Precision | 73.4% |
+| Recall | 57.7% |
+| mAP50 | 68.0% |
+| mAP50–95 | 43.6% |
+
+Performance varied across classes. Repair performed best, with 81.1% mAP50 and 78.1% recall, while Oblique crack had the lowest recall (30%). Pothole recall was also relatively low (47.6%), which is concerning because missing potholes could lead to higher maintenance costs.
+
+These differences may partly reflect class imbalance, as the training set contains only 63 Pothole annotations compared with 1,157 Repair annotations. Additionally, potential data leakage between dataset splits may make validation results more optimistic than performance on completely new roads.
 
 ## Per-class evaluation and failure modes
 
